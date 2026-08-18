@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width,
+               initial-scale=1.0,
+               maximum-scale=1.0,
+               user-scalable=no">
+<title>LAWANG GAME DEMO</title>
+<style>
+* {
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: none;
+}
+body {
+  margin: 0;
+  overflow: hidden;
+  background: #111827;
+  font-family: Arial, sans-serif;
+  color: white;
+}
+#game {
+  position: fixed;
+  inset: 0;
+  background:
+    linear-gradient(#182235 0 55%, #243047 55% 100%);
+}
+/* TOP HUD */
+#hud {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 20;
+}
+.panel {
+  background: rgba(0,0,0,.55);
+  padding: 9px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+}
+/* PLAYER */
+#player {
+  position: absolute;
+  width: 42px;
+  height: 70px;
+  left: 50%;
+  top: 65%;
+  transform: translate(-50%, -50%);
+  background: #2563eb;
+  border-radius: 12px;
+  z-index: 5;
+}
+#player.crouch {
+  height: 45px;
+}
+/* TARGET */
+.target {
+  position: absolute;
+  width: 58px;
+  height: 100px;
+  background: #475569;
+  border-radius: 12px;
+  z-index: 4;
+}
+.target .head {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  background: #ef4444;
+  border-radius: 50%;
+  left: 12px;
+  top: -40px;
+}
+.target .body {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: 5px;
+  height: 80px;
+  background: #64748b;
+  border-radius: 10px;
+}
+/* CROSSHAIR */
+#crosshair {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 38px;
+  height: 38px;
+  transform: translate(-50%, -50%);
+  z-index: 15;
+}
+#crosshair::before,
+#crosshair::after {
+  content: "";
+  position: absolute;
+  background: white;
+}
+#crosshair::before {
+  width: 38px;
+  height: 2px;
+  top: 18px;
+}
+#crosshair::after {
+  width: 2px;
+  height: 38px;
+  left: 18px;
+}
+/* CONTROLS */
+#controls {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+}
+.control {
+  pointer-events: auto;
+  position: absolute;
+  border: none;
+  color: white;
+  background: rgba(0,0,0,.55);
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  font-weight: bold;
+  font-size: 12px;
+}
+#up {
+  left: 75px;
+  bottom: 150px;
+}
+#down {
+  left: 75px;
+  bottom: 20px;
+}
+#left {
+  left: 10px;
+  bottom: 85px;
+}
+#right {
+  left: 140px;
+  bottom: 85px;
+}
+#fire {
+  right: 20px;
+  bottom: 85px;
+  width: 82px;
+  height: 82px;
+  background: rgba(220,38,38,.8);
+}
+#reload {
+  right: 25px;
+  bottom: 180px;
+}
+#switch {
+  right: 105px;
+  bottom: 180px;
+}
+#crouch {
+  right: 190px;
+  bottom: 20px;
+}
+/* MESSAGE */
+#message {
+  position: absolute;
+  left: 50%;
+  top: 18%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,.65);
+  padding: 10px 18px;
+  border-radius: 12px;
+  opacity: 0;
+  transition: opacity .2s;
+  z-index: 40;
+}
+#message.show {
+  opacity: 1;
+}
+</style>
+</head>
+<body>
+<div id="game">
+  <div id="hud">
+    <div class="panel">
+      ❤️ HP:
+      <span id="hp">100</span>
+    </div>
+    <div class="panel">
+      🔫
+      <span id="weapon">PISTOL</span>
+      |
+      Ammo:
+      <span id="ammo">12</span>
+    </div>
+  </div>
+  <div id="player"></div>
+  <div id="crosshair"></div>
+  <div id="message"></div>
+  <!-- TARGETS -->
+  <div class="target" id="target1"
+       style="left:25%; top:35%;">
+    <div class="head"></div>
+    <div class="body"></div>
+  </div>
+  <div class="target" id="target2"
+       style="left:65%; top:30%;">
+    <div class="head"></div>
+    <div class="body"></div>
+  </div>
+  <div class="target" id="target3"
+       style="left:48%; top:22%;">
+    <div class="head"></div>
+    <div class="body"></div>
+  </div>
+  <!-- CONTROLS -->
+  <div id="controls">
+    <button class="control" id="up">▲</button>
+    <button class="control" id="down">▼</button>
+    <button class="control" id="left">◀</button>
+    <button class="control" id="right">▶</button>
+    <button class="control" id="fire">
+      FIRE
+    </button>
+    <button class="control" id="reload">
+      RELOAD
+    </button>
+    <button class="control" id="switch">
+      GUN
+    </button>
+    <button class="control" id="crouch">
+      CROUCH
+    </button>
+  </div>
+</div>
+<script>
+/* ================================
+   GAME STATE
+================================ */
+const player = document.getElementById("player");
+const hpText =
+  document.getElementById("hp");
+const ammoText =
+  document.getElementById("ammo");
+const weaponText =
+  document.getElementById("weapon");
+const message =
+  document.getElementById("message");
+let playerX = window.innerWidth / 2;
+let playerY = window.innerHeight * .65;
+let hp = 100;
+let ammo = 12;
+let crouching = false;
+let weaponIndex = 0;
+/* ================================
+   WEAPONS
+================================ */
+const weapons = [
+  {
+    name: "PISTOL",
+    magazine: 12,
+    damage: 100,
+    fireDelay: 350
+  },
+  {
+    name: "RIFLE",
+    magazine: 30,
+    damage: 100,
+    fireDelay: 120
+  },
+  {
+    name: "SNIPER",
+    magazine: 5,
+    damage: 100,
+    fireDelay: 900
+  }
+];
+/* ================================
+   UI
+================================ */
+function updateHUD() {
+  hpText.innerText = hp;
+  ammoText.innerText = ammo;
+  weaponText.innerText =
+    weapons[weaponIndex].name;
+}
+/* ================================
+   PLAYER
+================================ */
+function updatePlayer() {
+  const halfW = 21;
+  const halfH =
+    crouching ? 23 : 35;
+  playerX =
+    Math.max(
+      halfW,
+      Math.min(
+        window.innerWidth - halfW,
+        playerX
+      )
+    );
+  playerY =
+    Math.max(
+      halfH + 60,
+      Math.min(
+        window.innerHeight - halfH - 20,
+        playerY
+      )
+    );
+  player.style.left =
+    playerX + "px";
+  player.style.top =
+    playerY + "px";
+}
+/* ================================
+   MOVEMENT
+================================ */
+function move(dx, dy) {
+  const speed =
+    crouching ? 2 : 4;
+  playerX += dx * speed;
+  playerY += dy * speed;
+  updatePlayer();
+}
+/* ================================
+   BUTTON HOLD
+================================ */
+function holdButton(
+  element,
+  action
+) {
+  let timer = null;
+  const start = e => {
+    e.preventDefault();
+    action();
+    timer =
+      setInterval(
+        action,
+        30
+      );
+  };
+  const stop = e => {
+    e.preventDefault();
+    clearInterval(timer);
+    timer = null;
+  };
+  element.addEventListener(
+    "touchstart",
+    start,
+    { passive:false }
+  );
+  element.addEventListener(
+    "touchend",
+    stop,
+    { passive:false }
+  );
+  element.addEventListener(
+    "touchcancel",
+    stop,
+    { passive:false }
+  );
+}
+/* ================================
+   MOVEMENT BUTTONS
+================================ */
+holdButton(
+  document.getElementById("up"),
+  () => move(0,-1)
+);
+holdButton(
+  document.getElementById("down"),
+  () => move(0,1)
+);
+holdButton(
+  document.getElementById("left"),
+  () => move(-1,0)
+);
+holdButton(
+  document.getElementById("right"),
+  () => move(1,0)
+);
+/* ================================
+   CROUCH
+================================ */
+document
+  .getElementById("crouch")
+  .addEventListener(
+    "touchstart",
+    e => {
+      e.preventDefault();
+      crouching =
+        !crouching;
+      player.classList.toggle(
+        "crouch",
+        crouching
+      );
+      showMessage(
+        crouching
+          ? "Crouch ON"
+          : "Crouch OFF"
+      );
+      updatePlayer();
+    },
+    { passive:false }
+  );
+/* ================================
+   GUN SWITCH
+================================ */
+document
+  .getElementById("switch")
+  .addEventListener(
+    "touchstart",
+    e => {
+      e.preventDefault();
+      weaponIndex++;
+      if (
+        weaponIndex >=
+        weapons.length
+      ) {
+        weaponIndex = 0;
+      }
+      ammo =
+        weapons[
+          weaponIndex
+        ].magazine;
+      updateHUD();
+      showMessage(
+        "Weapon: " +
+        weapons[
+          weaponIndex
+        ].name
+      );
+    },
+    { passive:false }
+  );
+/* ================================
+   RELOAD
+================================ */
+document
+  .getElementById("reload")
+  .addEventListener(
+    "touchstart",
+    e => {
+      e.preventDefault();
+      const maxAmmo =
+        weapons[
+          weaponIndex
+        ].magazine;
+      ammo = maxAmmo;
+      updateHUD();
+      showMessage(
+        "Reloaded"
+      );
+    },
+    { passive:false }
+  );
+/* ================================
+   TARGET HIT DETECTION
+================================ */
+function shoot() {
+  if (ammo <= 0) {
+    showMessage(
+      "OUT OF AMMO"
+    );
+    return;
+  }
+  ammo--;
+  updateHUD();
+  const targets =
+    document.querySelectorAll(
+      ".target"
+    );
+  let hit = false;
+  targets.forEach(
+    target => {
+      const head =
+        target.querySelector(
+          ".head"
+        );
+      const rect =
+        head.getBoundingClientRect();
+      const crossX =
+        window.innerWidth / 2;
+      const crossY =
+        window.innerHeight / 2;
+      const insideHead =
+        crossX >= rect.left &&
+        crossX <= rect.right &&
+        crossY >= rect.top &&
+        crossY <= rect.bottom;
+      if (insideHead) {
+        hit = true;
+        head.style.background =
+          "#22c55e";
+        showMessage(
+          "🎯 HEAD HIT! +" +
+          weapons[
+            weaponIndex
+          ].damage +
+          " DAMAGE"
+        );
+        setTimeout(
+          () => {
+            head.style.background =
+              "#ef4444";
+          },
+          300
+        );
+      }
+    }
+  );
+  if (!hit) {
+    showMessage(
+      "Miss"
+    );
+  }
+}
+/* ================================
+   FIRE BUTTON
+================================ */
+let firing = false;
+let fireTimer = null;
+function startFire(e) {
+  e.preventDefault();
+  if (firing) return;
+  firing = true;
+  shoot();
+  fireTimer =
+    setInterval(
+      () => {
+        shoot();
+      },
+      weapons[
+        weaponIndex
+      ].fireDelay
+    );
+}
+function stopFire(e) {
+  e.preventDefault();
+  firing = false;
+  clearInterval(
+    fireTimer
+  );
+  fireTimer = null;
+}
+const fireButton =
+  document.getElementById(
+    "fire"
+  );
+fireButton.addEventListener(
+  "touchstart",
+  startFire,
+  { passive:false }
+);
+fireButton.addEventListener(
+  "touchend",
+  stopFire,
+  { passive:false }
+);
+fireButton.addEventListener(
+  "touchcancel",
+  stopFire,
+  { passive:false }
+);
+/* ================================
+   MESSAGE
+================================ */
+let messageTimer;
+function showMessage(text) {
+  message.innerText =
+    text;
+  message.classList.add(
+    "show"
+  );
+  clearTimeout(
+    messageTimer
+  );
+  messageTimer =
+    setTimeout(
+      () => {
+        message.classList.remove(
+          "show"
+        );
+      },
+      900
+    );
+}
+/* ================================
+   START
+================================ */
+updateHUD();
+updatePlayer();
+showMessage(
+  "GAME DEMO READY"
+);
+</script>
+</body>
+</html>
