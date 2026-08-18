@@ -3,601 +3,805 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"
-      content="width=device-width,
-               initial-scale=1.0,
-               maximum-scale=1.0,
-               user-scalable=no">
-<title>LAWANG GAME DEMO</title>
+      content="width=device-width, initial-scale=1.0,
+               maximum-scale=1.0, user-scalable=no">
+
+<title>Lawang-gaming</title>
+
 <style>
 * {
   box-sizing: border-box;
-  -webkit-user-select: none;
-  user-select: none;
-  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
 }
-body {
+
+html, body {
   margin: 0;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   background: #111827;
   font-family: Arial, sans-serif;
+  touch-action: none;
+}
+
+#game {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at center,
+      #374151 0%,
+      #1f2937 45%,
+      #111827 100%);
+}
+
+/* =========================
+   TOP BAR
+========================= */
+
+#topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 55px;
+  z-index: 20;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 14px;
+
+  background: rgba(0,0,0,0.55);
   color: white;
 }
-#game {
-  position: fixed;
-  inset: 0;
-  background:
-    linear-gradient(#182235 0 55%, #243047 55% 100%);
+
+.logo {
+  font-size: 18px;
+  font-weight: bold;
 }
-/* TOP HUD */
-#hud {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  right: 12px;
-  display: flex;
-  justify-content: space-between;
-  z-index: 20;
-}
-.panel {
-  background: rgba(0,0,0,.55);
-  padding: 9px 12px;
-  border-radius: 12px;
+
+.stats {
   font-size: 13px;
 }
-/* PLAYER */
+
+/* =========================
+   PLAYER
+========================= */
+
 #player {
   position: absolute;
+
   width: 42px;
-  height: 70px;
+  height: 42px;
+
   left: 50%;
-  top: 65%;
+  top: 55%;
+
   transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
   background: #2563eb;
-  border-radius: 12px;
-  z-index: 5;
+  border: 3px solid white;
+
+  z-index: 10;
 }
-#player.crouch {
-  height: 45px;
-}
-/* TARGET */
+
+/* =========================
+   TARGETS
+========================= */
+
 .target {
   position: absolute;
-  width: 58px;
-  height: 100px;
-  background: #475569;
+
+  width: 42px;
+  height: 70px;
+
   border-radius: 12px;
-  z-index: 4;
+
+  background: #ef4444;
+  border: 3px solid white;
+
+  z-index: 5;
 }
-.target .head {
+
+.target::before {
+  content: "";
+
   position: absolute;
+
   width: 34px;
   height: 34px;
-  background: #ef4444;
+
+  left: 50%;
+  top: -22px;
+
+  transform: translateX(-50%);
+
   border-radius: 50%;
-  left: 12px;
-  top: -40px;
+
+  background: #fbbf24;
+  border: 3px solid white;
 }
-.target .body {
-  position: absolute;
-  left: 8px;
-  right: 8px;
-  top: 5px;
-  height: 80px;
-  background: #64748b;
-  border-radius: 10px;
+
+.target.hit {
+  opacity: 0.25;
 }
-/* CROSSHAIR */
+
+/* =========================
+   CROSSHAIR
+========================= */
+
 #crosshair {
   position: absolute;
+
   left: 50%;
   top: 50%;
-  width: 38px;
-  height: 38px;
+
+  width: 34px;
+  height: 34px;
+
   transform: translate(-50%, -50%);
-  z-index: 15;
+
+  z-index: 30;
+
+  pointer-events: none;
 }
+
 #crosshair::before,
 #crosshair::after {
   content: "";
+
   position: absolute;
+
   background: white;
 }
+
 #crosshair::before {
-  width: 38px;
+  width: 34px;
   height: 2px;
-  top: 18px;
+
+  left: 0;
+  top: 16px;
 }
+
 #crosshair::after {
   width: 2px;
-  height: 38px;
-  left: 18px;
+  height: 34px;
+
+  left: 16px;
+  top: 0;
 }
-/* CONTROLS */
-#controls {
-  position: absolute;
-  inset: 0;
-  z-index: 30;
-  pointer-events: none;
-}
+
+/* =========================
+   CONTROLS
+========================= */
+
 .control {
-  pointer-events: auto;
   position: absolute;
+
+  z-index: 40;
+
   border: none;
-  color: white;
-  background: rgba(0,0,0,.55);
+
   border-radius: 50%;
-  width: 64px;
-  height: 64px;
+
+  color: white;
+
+  background: rgba(0,0,0,0.55);
+
+  border: 2px solid rgba(255,255,255,0.5);
+
   font-weight: bold;
-  font-size: 12px;
+
+  user-select: none;
 }
+
 #up {
   left: 75px;
-  bottom: 150px;
+  bottom: 125px;
+
+  width: 55px;
+  height: 55px;
 }
+
 #down {
   left: 75px;
-  bottom: 20px;
+  bottom: 15px;
+
+  width: 55px;
+  height: 55px;
 }
+
 #left {
-  left: 10px;
-  bottom: 85px;
+  left: 15px;
+  bottom: 70px;
+
+  width: 55px;
+  height: 55px;
 }
+
 #right {
-  left: 140px;
-  bottom: 85px;
+  left: 135px;
+  bottom: 70px;
+
+  width: 55px;
+  height: 55px;
 }
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+
+.action {
+  position: absolute;
+
+  z-index: 40;
+
+  border: none;
+
+  border-radius: 50%;
+
+  color: white;
+
+  background: rgba(0,0,0,0.65);
+
+  border: 2px solid rgba(255,255,255,0.5);
+
+  font-weight: bold;
+}
+
 #fire {
-  right: 20px;
-  bottom: 85px;
+  right: 25px;
+  bottom: 45px;
+
   width: 82px;
   height: 82px;
-  background: rgba(220,38,38,.8);
+
+  background: rgba(220,38,38,0.8);
+
+  font-size: 17px;
 }
+
 #reload {
-  right: 25px;
-  bottom: 180px;
+  right: 125px;
+  bottom: 35px;
+
+  width: 58px;
+  height: 58px;
 }
+
 #switch {
-  right: 105px;
-  bottom: 180px;
+  right: 115px;
+  bottom: 110px;
+
+  width: 68px;
+  height: 68px;
 }
-#crouch {
-  right: 190px;
-  bottom: 20px;
-}
-/* MESSAGE */
+
+/* =========================
+   MESSAGE
+========================= */
+
 #message {
   position: absolute;
+
   left: 50%;
-  top: 18%;
+  top: 75px;
+
   transform: translateX(-50%);
-  background: rgba(0,0,0,.65);
-  padding: 10px 18px;
-  border-radius: 12px;
-  opacity: 0;
-  transition: opacity .2s;
-  z-index: 40;
+
+  z-index: 50;
+
+  color: white;
+
+  background: rgba(0,0,0,0.55);
+
+  padding: 8px 14px;
+
+  border-radius: 10px;
+
+  font-size: 14px;
+
+  white-space: nowrap;
 }
-#message.show {
-  opacity: 1;
+
+/* =========================
+   DESKTOP
+========================= */
+
+@media (min-width: 700px) {
+
+  #game {
+    max-width: 1100px;
+    margin: auto;
+  }
 }
 </style>
 </head>
+
 <body>
+
 <div id="game">
-  <div id="hud">
-    <div class="panel">
-      ❤️ HP:
-      <span id="hp">100</span>
+
+  <div id="topbar">
+
+    <div class="logo">
+      LAWANG-GAMING
     </div>
-    <div class="panel">
-      🔫
-      <span id="weapon">PISTOL</span>
+
+    <div class="stats">
+      Weapon:
+      <span id="weapon">Rifle</span>
       |
       Ammo:
-      <span id="ammo">12</span>
+      <span id="ammo">30</span>/30
+      |
+      Hits:
+      <span id="hits">0</span>
     </div>
+
   </div>
+
+  <div id="message">
+    LAWANG-GAMING DEMO
+  </div>
+
   <div id="player"></div>
+
   <div id="crosshair"></div>
-  <div id="message"></div>
+
   <!-- TARGETS -->
-  <div class="target" id="target1"
-       style="left:25%; top:35%;">
-    <div class="head"></div>
-    <div class="body"></div>
+
+  <div class="target"
+       id="target1"
+       style="left:25%;top:35%;">
   </div>
-  <div class="target" id="target2"
-       style="left:65%; top:30%;">
-    <div class="head"></div>
-    <div class="body"></div>
+
+  <div class="target"
+       id="target2"
+       style="left:65%;top:30%;">
   </div>
-  <div class="target" id="target3"
-       style="left:48%; top:22%;">
-    <div class="head"></div>
-    <div class="body"></div>
+
+  <div class="target"
+       id="target3"
+       style="left:50%;top:65%;">
   </div>
-  <!-- CONTROLS -->
-  <div id="controls">
-    <button class="control" id="up">▲</button>
-    <button class="control" id="down">▼</button>
-    <button class="control" id="left">◀</button>
-    <button class="control" id="right">▶</button>
-    <button class="control" id="fire">
-      FIRE
-    </button>
-    <button class="control" id="reload">
-      RELOAD
-    </button>
-    <button class="control" id="switch">
-      GUN
-    </button>
-    <button class="control" id="crouch">
-      CROUCH
-    </button>
-  </div>
+
+  <!-- MOVEMENT -->
+
+  <button class="control" id="up">▲</button>
+  <button class="control" id="down">▼</button>
+  <button class="control" id="left">◀</button>
+  <button class="control" id="right">▶</button>
+
+  <!-- ACTIONS -->
+
+  <button class="action" id="fire">
+    FIRE
+  </button>
+
+  <button class="action" id="reload">
+    ↻
+  </button>
+
+  <button class="action" id="switch">
+    GUN
+  </button>
+
 </div>
+
 <script>
-/* ================================
-   GAME STATE
-================================ */
-const player = document.getElementById("player");
-const hpText =
-  document.getElementById("hp");
+
+/* =========================================
+   LAWANG-GAMING
+   STANDALONE DEMO
+========================================= */
+
+const game =
+  document.getElementById("game");
+
+const player =
+  document.getElementById("player");
+
 const ammoText =
   document.getElementById("ammo");
+
+const hitsText =
+  document.getElementById("hits");
+
 const weaponText =
   document.getElementById("weapon");
+
 const message =
   document.getElementById("message");
-let playerX = window.innerWidth / 2;
-let playerY = window.innerHeight * .65;
-let hp = 100;
-let ammo = 12;
-let crouching = false;
+
+
+let playerX = 50;
+let playerY = 55;
+
+let ammo = 30;
+let hits = 0;
+
 let weaponIndex = 0;
-/* ================================
-   WEAPONS
-================================ */
+
 const weapons = [
-  {
-    name: "PISTOL",
-    magazine: 12,
-    damage: 100,
-    fireDelay: 350
-  },
-  {
-    name: "RIFLE",
-    magazine: 30,
-    damage: 100,
-    fireDelay: 120
-  },
-  {
-    name: "SNIPER",
-    magazine: 5,
-    damage: 100,
-    fireDelay: 900
-  }
+  "Rifle",
+  "SMG",
+  "Shotgun"
 ];
-/* ================================
-   UI
-================================ */
-function updateHUD() {
-  hpText.innerText = hp;
-  ammoText.innerText = ammo;
-  weaponText.innerText =
-    weapons[weaponIndex].name;
-}
-/* ================================
+
+const speed = 0.7;
+
+
+/* =========================================
    PLAYER
-================================ */
+========================================= */
+
 function updatePlayer() {
-  const halfW = 21;
-  const halfH =
-    crouching ? 23 : 35;
+
   playerX =
     Math.max(
-      halfW,
-      Math.min(
-        window.innerWidth - halfW,
-        playerX
-      )
+      5,
+      Math.min(95, playerX)
     );
+
   playerY =
     Math.max(
-      halfH + 60,
-      Math.min(
-        window.innerHeight - halfH - 20,
-        playerY
-      )
+      10,
+      Math.min(90, playerY)
     );
+
   player.style.left =
-    playerX + "px";
+    playerX + "%";
+
   player.style.top =
-    playerY + "px";
+    playerY + "%";
 }
-/* ================================
+
+
+/* =========================================
    MOVEMENT
-================================ */
-function move(dx, dy) {
-  const speed =
-    crouching ? 2 : 4;
-  playerX += dx * speed;
-  playerY += dy * speed;
+========================================= */
+
+function move(direction) {
+
+  if (direction === "up") {
+    playerY -= speed;
+  }
+
+  if (direction === "down") {
+    playerY += speed;
+  }
+
+  if (direction === "left") {
+    playerX -= speed;
+  }
+
+  if (direction === "right") {
+    playerX += speed;
+  }
+
   updatePlayer();
 }
-/* ================================
-   BUTTON HOLD
-================================ */
+
+
+/* =========================================
+   TOUCH CONTROL
+========================================= */
+
 function holdButton(
   element,
-  action
+  direction
 ) {
+
   let timer = null;
-  const start = e => {
-    e.preventDefault();
-    action();
+
+  const start = (event) => {
+
+    event.preventDefault();
+
+    move(direction);
+
     timer =
       setInterval(
-        action,
+        () => move(direction),
         30
       );
   };
-  const stop = e => {
-    e.preventDefault();
-    clearInterval(timer);
-    timer = null;
+
+  const stop = () => {
+
+    if (timer) {
+
+      clearInterval(timer);
+
+      timer = null;
+    }
   };
+
   element.addEventListener(
     "touchstart",
     start,
     { passive:false }
   );
+
   element.addEventListener(
     "touchend",
-    stop,
-    { passive:false }
+    stop
   );
+
   element.addEventListener(
     "touchcancel",
-    stop,
-    { passive:false }
+    stop
+  );
+
+  element.addEventListener(
+    "mousedown",
+    start
+  );
+
+  element.addEventListener(
+    "mouseup",
+    stop
+  );
+
+  element.addEventListener(
+    "mouseleave",
+    stop
   );
 }
-/* ================================
-   MOVEMENT BUTTONS
-================================ */
+
+
 holdButton(
   document.getElementById("up"),
-  () => move(0,-1)
+  "up"
 );
+
 holdButton(
   document.getElementById("down"),
-  () => move(0,1)
+  "down"
 );
+
 holdButton(
   document.getElementById("left"),
-  () => move(-1,0)
+  "left"
 );
+
 holdButton(
   document.getElementById("right"),
-  () => move(1,0)
+  "right"
 );
-/* ================================
-   CROUCH
-================================ */
-document
-  .getElementById("crouch")
-  .addEventListener(
-    "touchstart",
-    e => {
-      e.preventDefault();
-      crouching =
-        !crouching;
-      player.classList.toggle(
-        "crouch",
-        crouching
-      );
-      showMessage(
-        crouching
-          ? "Crouch ON"
-          : "Crouch OFF"
-      );
-      updatePlayer();
-    },
-    { passive:false }
-  );
-/* ================================
-   GUN SWITCH
-================================ */
-document
-  .getElementById("switch")
-  .addEventListener(
-    "touchstart",
-    e => {
-      e.preventDefault();
-      weaponIndex++;
-      if (
-        weaponIndex >=
-        weapons.length
-      ) {
-        weaponIndex = 0;
-      }
-      ammo =
-        weapons[
-          weaponIndex
-        ].magazine;
-      updateHUD();
-      showMessage(
-        "Weapon: " +
-        weapons[
-          weaponIndex
-        ].name
-      );
-    },
-    { passive:false }
-  );
-/* ================================
-   RELOAD
-================================ */
-document
-  .getElementById("reload")
-  .addEventListener(
-    "touchstart",
-    e => {
-      e.preventDefault();
-      const maxAmmo =
-        weapons[
-          weaponIndex
-        ].magazine;
-      ammo = maxAmmo;
-      updateHUD();
-      showMessage(
-        "Reloaded"
-      );
-    },
-    { passive:false }
-  );
-/* ================================
-   TARGET HIT DETECTION
-================================ */
-function shoot() {
+
+
+/* =========================================
+   FIRE
+========================================= */
+
+function fire() {
+
   if (ammo <= 0) {
+
     showMessage(
-      "OUT OF AMMO"
+      "Out of ammo — Reload"
     );
+
     return;
   }
+
   ammo--;
-  updateHUD();
+
+  ammoText.innerText =
+    ammo;
+
+  /*
+    Demo hit system:
+
+    The crosshair is treated as the
+    aiming point. We check whether
+    a target's HEAD is close to it.
+  */
+
   const targets =
     document.querySelectorAll(
       ".target"
     );
+
   let hit = false;
+
+  const crossX =
+    window.innerWidth / 2;
+
+  const crossY =
+    window.innerHeight / 2;
+
+
   targets.forEach(
     target => {
-      const head =
-        target.querySelector(
-          ".head"
-        );
+
+      if (
+        target.classList.contains(
+          "hit"
+        )
+      ) {
+
+        return;
+      }
+
       const rect =
-        head.getBoundingClientRect();
-      const crossX =
-        window.innerWidth / 2;
-      const crossY =
-        window.innerHeight / 2;
-      const insideHead =
-        crossX >= rect.left &&
-        crossX <= rect.right &&
-        crossY >= rect.top &&
-        crossY <= rect.bottom;
-      if (insideHead) {
-        hit = true;
-        head.style.background =
-          "#22c55e";
-        showMessage(
-          "🎯 HEAD HIT! +" +
-          weapons[
-            weaponIndex
-          ].damage +
-          " DAMAGE"
+        target.getBoundingClientRect();
+
+      /*
+        HEAD AREA ONLY
+      */
+
+      const headX =
+        rect.left +
+        rect.width / 2;
+
+      const headY =
+        rect.top -
+        22 +
+        17;
+
+      const distance =
+        Math.hypot(
+          crossX - headX,
+          crossY - headY
         );
-        setTimeout(
-          () => {
-            head.style.background =
-              "#ef4444";
-          },
-          300
+
+      if (distance < 35) {
+
+        target.classList.add(
+          "hit"
+        );
+
+        hits++;
+
+        hitsText.innerText =
+          hits;
+
+        hit = true;
+
+        showMessage(
+          "HEAD HIT!"
         );
       }
+
     }
   );
+
+
   if (!hit) {
+
     showMessage(
-      "Miss"
+      "MISS"
     );
+
   }
 }
-/* ================================
+
+
+/* =========================================
    FIRE BUTTON
-================================ */
-let firing = false;
-let fireTimer = null;
-function startFire(e) {
-  e.preventDefault();
-  if (firing) return;
-  firing = true;
-  shoot();
-  fireTimer =
-    setInterval(
-      () => {
-        shoot();
-      },
-      weapons[
-        weaponIndex
-      ].fireDelay
-    );
-}
-function stopFire(e) {
-  e.preventDefault();
-  firing = false;
-  clearInterval(
-    fireTimer
-  );
-  fireTimer = null;
-}
+========================================= */
+
 const fireButton =
-  document.getElementById(
-    "fire"
-  );
+  document.getElementById("fire");
+
 fireButton.addEventListener(
   "touchstart",
-  startFire,
+  event => {
+
+    event.preventDefault();
+
+    fire();
+
+  },
   { passive:false }
 );
+
 fireButton.addEventListener(
-  "touchend",
-  stopFire,
-  { passive:false }
+  "click",
+  fire
 );
-fireButton.addEventListener(
-  "touchcancel",
-  stopFire,
-  { passive:false }
-);
-/* ================================
+
+
+/* =========================================
+   RELOAD
+========================================= */
+
+function reload() {
+
+  ammo = 30;
+
+  ammoText.innerText =
+    ammo;
+
+  showMessage(
+    "Reloaded"
+  );
+}
+
+document
+  .getElementById("reload")
+  .addEventListener(
+    "click",
+    reload
+  );
+
+
+/* =========================================
+   WEAPON SWITCH
+========================================= */
+
+function switchWeapon() {
+
+  weaponIndex++;
+
+  if (
+    weaponIndex >=
+    weapons.length
+  ) {
+
+    weaponIndex = 0;
+  }
+
+  weaponText.innerText =
+    weapons[weaponIndex];
+
+  showMessage(
+    "Weapon: " +
+    weapons[weaponIndex]
+  );
+}
+
+document
+  .getElementById("switch")
+  .addEventListener(
+    "click",
+    switchWeapon
+  );
+
+
+/* =========================================
    MESSAGE
-================================ */
-let messageTimer;
+========================================= */
+
+let messageTimer = null;
+
 function showMessage(text) {
+
   message.innerText =
     text;
-  message.classList.add(
-    "show"
-  );
+
   clearTimeout(
     messageTimer
   );
+
   messageTimer =
     setTimeout(
       () => {
-        message.classList.remove(
-          "show"
-        );
+
+        message.innerText =
+          "LAWANG-GAMING DEMO";
+
       },
-      900
+      1000
     );
 }
-/* ================================
+
+
+/* =========================================
    START
-================================ */
-updateHUD();
+========================================= */
+
 updatePlayer();
-showMessage(
-  "GAME DEMO READY"
-);
+
 </script>
+
 </body>
 </html>
