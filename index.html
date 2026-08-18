@@ -3,321 +3,402 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"
-      content="width=device-width, initial-scale=1.0,
-               maximum-scale=1.0, user-scalable=no">
+      content="width=device-width,initial-scale=1,
+               maximum-scale=1,user-scalable=no">
 
-<title>Lawang-gaming</title>
+<title>Lawang-gaming v2</title>
 
 <style>
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  -webkit-tap-highlight-color:transparent;
 }
 
-html, body {
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: #111827;
-  font-family: Arial, sans-serif;
-  touch-action: none;
+html,body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:#111827;
+  font-family:Arial,sans-serif;
+  touch-action:none;
 }
 
-#game {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+#game{
+  position:relative;
+  width:100vw;
+  height:100vh;
+  overflow:hidden;
   background:
     radial-gradient(circle at center,
-      #374151 0%,
-      #1f2937 45%,
-      #111827 100%);
+    #374151 0%,
+    #1f2937 45%,
+    #111827 100%);
 }
 
-/* =========================
-   TOP BAR
-========================= */
+/* ================= TOP BAR ================= */
 
-#topbar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 55px;
-  z-index: 20;
+#topbar{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:55px;
+  z-index:100;
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 
-  padding: 0 14px;
+  padding:0 12px;
 
-  background: rgba(0,0,0,0.55);
-  color: white;
+  color:white;
+  background:rgba(0,0,0,.65);
 }
 
-.logo {
-  font-size: 18px;
-  font-weight: bold;
+.logo{
+  font-size:17px;
+  font-weight:bold;
 }
 
-.stats {
-  font-size: 13px;
+.stats{
+  font-size:12px;
 }
 
-/* =========================
-   PLAYER
-========================= */
+/* ================= PLAYER ================= */
 
-#player {
-  position: absolute;
+#player{
+  position:absolute;
 
-  width: 42px;
-  height: 42px;
+  width:42px;
+  height:42px;
 
-  left: 50%;
-  top: 55%;
+  left:50%;
+  top:55%;
 
-  transform: translate(-50%, -50%);
+  transform:translate(-50%,-50%);
 
-  border-radius: 50%;
+  border-radius:50%;
 
-  background: #2563eb;
-  border: 3px solid white;
+  background:#2563eb;
 
-  z-index: 10;
+  border:3px solid white;
+
+  z-index:20;
 }
 
-/* =========================
-   TARGETS
-========================= */
+/* ================= TARGET ================= */
 
-.target {
-  position: absolute;
+.enemy{
+  position:absolute;
 
-  width: 42px;
-  height: 70px;
+  width:46px;
+  height:72px;
 
-  border-radius: 12px;
+  background:#dc2626;
 
-  background: #ef4444;
-  border: 3px solid white;
+  border:3px solid white;
 
-  z-index: 5;
+  border-radius:12px;
+
+  z-index:10;
 }
 
-.target::before {
-  content: "";
+.enemy-head{
+  position:absolute;
 
-  position: absolute;
+  width:34px;
+  height:34px;
 
-  width: 34px;
-  height: 34px;
+  left:50%;
+  top:-25px;
 
-  left: 50%;
-  top: -22px;
+  transform:translateX(-50%);
 
-  transform: translateX(-50%);
+  border-radius:50%;
 
-  border-radius: 50%;
+  background:#fbbf24;
 
-  background: #fbbf24;
-  border: 3px solid white;
+  border:3px solid white;
+
+  cursor:pointer;
 }
 
-.target.hit {
-  opacity: 0.25;
+.enemy-body{
+  position:absolute;
+
+  left:3px;
+  right:3px;
+  top:28px;
+  height:32px;
+
+  border-radius:6px;
+
+  cursor:pointer;
 }
 
-/* =========================
-   CROSSHAIR
-========================= */
+.enemy-legs{
+  position:absolute;
 
-#crosshair {
-  position: absolute;
+  left:8px;
+  right:8px;
+  bottom:-18px;
+  height:18px;
 
-  left: 50%;
-  top: 50%;
+  background:#1e40af;
 
-  width: 34px;
-  height: 34px;
+  border-radius:0 0 7px 7px;
 
-  transform: translate(-50%, -50%);
-
-  z-index: 30;
-
-  pointer-events: none;
+  cursor:pointer;
 }
 
-#crosshair::before,
-#crosshair::after {
-  content: "";
-
-  position: absolute;
-
-  background: white;
+.enemy.dead{
+  opacity:.25;
+  filter:grayscale(1);
 }
 
-#crosshair::before {
-  width: 34px;
-  height: 2px;
+/* ================= CROSSHAIR ================= */
 
-  left: 0;
-  top: 16px;
+#crosshair{
+  position:absolute;
+
+  left:50%;
+  top:50%;
+
+  width:36px;
+  height:36px;
+
+  transform:translate(-50%,-50%);
+
+  z-index:80;
+
+  pointer-events:none;
 }
 
-#crosshair::after {
-  width: 2px;
-  height: 34px;
-
-  left: 16px;
-  top: 0;
+#crosshair:before,
+#crosshair:after{
+  content:"";
+  position:absolute;
+  background:white;
 }
 
-/* =========================
-   CONTROLS
-========================= */
-
-.control {
-  position: absolute;
-
-  z-index: 40;
-
-  border: none;
-
-  border-radius: 50%;
-
-  color: white;
-
-  background: rgba(0,0,0,0.55);
-
-  border: 2px solid rgba(255,255,255,0.5);
-
-  font-weight: bold;
-
-  user-select: none;
+#crosshair:before{
+  width:36px;
+  height:2px;
+  left:0;
+  top:17px;
 }
 
-#up {
-  left: 75px;
-  bottom: 125px;
-
-  width: 55px;
-  height: 55px;
+#crosshair:after{
+  width:2px;
+  height:36px;
+  left:17px;
+  top:0;
 }
 
-#down {
-  left: 75px;
-  bottom: 15px;
+/* ================= MESSAGE ================= */
 
-  width: 55px;
-  height: 55px;
+#message{
+  position:absolute;
+
+  top:68px;
+  left:50%;
+
+  transform:translateX(-50%);
+
+  z-index:150;
+
+  color:white;
+
+  background:rgba(0,0,0,.65);
+
+  padding:8px 14px;
+
+  border-radius:10px;
+
+  font-size:13px;
+
+  white-space:nowrap;
 }
 
-#left {
-  left: 15px;
-  bottom: 70px;
+/* ================= JOYSTICKS ================= */
 
-  width: 55px;
-  height: 55px;
+.joystick{
+  position:absolute;
+
+  width:120px;
+  height:120px;
+
+  border-radius:50%;
+
+  background:rgba(0,0,0,.30);
+
+  border:2px solid rgba(255,255,255,.35);
+
+  z-index:120;
 }
 
-#right {
-  left: 135px;
-  bottom: 70px;
-
-  width: 55px;
-  height: 55px;
+#moveStick{
+  left:20px;
+  bottom:25px;
 }
 
-/* =========================
-   ACTION BUTTONS
-========================= */
-
-.action {
-  position: absolute;
-
-  z-index: 40;
-
-  border: none;
-
-  border-radius: 50%;
-
-  color: white;
-
-  background: rgba(0,0,0,0.65);
-
-  border: 2px solid rgba(255,255,255,0.5);
-
-  font-weight: bold;
+#aimStick{
+  right:20px;
+  bottom:25px;
 }
 
-#fire {
-  right: 25px;
-  bottom: 45px;
+.stick{
+  position:absolute;
 
-  width: 82px;
-  height: 82px;
+  width:52px;
+  height:52px;
 
-  background: rgba(220,38,38,0.8);
+  left:34px;
+  top:34px;
 
-  font-size: 17px;
+  border-radius:50%;
+
+  background:rgba(255,255,255,.35);
+
+  border:2px solid rgba(255,255,255,.65);
 }
 
-#reload {
-  right: 125px;
-  bottom: 35px;
+/* ================= ACTION BUTTONS ================= */
 
-  width: 58px;
-  height: 58px;
+.action{
+  position:absolute;
+
+  z-index:130;
+
+  border:2px solid rgba(255,255,255,.55);
+
+  color:white;
+
+  border-radius:50%;
+
+  background:rgba(0,0,0,.65);
+
+  font-weight:bold;
 }
 
-#switch {
-  right: 115px;
-  bottom: 110px;
+#fire{
+  right:155px;
+  bottom:170px;
 
-  width: 68px;
-  height: 68px;
+  width:76px;
+  height:76px;
+
+  background:rgba(220,38,38,.85);
 }
 
-/* =========================
-   MESSAGE
-========================= */
+#reload{
+  right:35px;
+  bottom:170px;
 
-#message {
-  position: absolute;
-
-  left: 50%;
-  top: 75px;
-
-  transform: translateX(-50%);
-
-  z-index: 50;
-
-  color: white;
-
-  background: rgba(0,0,0,0.55);
-
-  padding: 8px 14px;
-
-  border-radius: 10px;
-
-  font-size: 14px;
-
-  white-space: nowrap;
+  width:58px;
+  height:58px;
 }
 
-/* =========================
-   DESKTOP
-========================= */
+#switch{
+  right:35px;
+  bottom:105px;
 
-@media (min-width: 700px) {
+  width:58px;
+  height:58px;
+}
 
-  #game {
-    max-width: 1100px;
-    margin: auto;
+#run{
+  left:155px;
+  bottom:160px;
+
+  width:58px;
+  height:58px;
+}
+
+#crouch{
+  left:155px;
+  bottom:95px;
+
+  width:58px;
+  height:58px;
+}
+
+/* ================= HEALTH ================= */
+
+#healthBox{
+  position:absolute;
+
+  left:50%;
+  bottom:15px;
+
+  transform:translateX(-50%);
+
+  width:160px;
+
+  z-index:100;
+
+  color:white;
+
+  text-align:center;
+
+  font-size:12px;
+}
+
+#healthBar{
+  width:100%;
+  height:8px;
+
+  margin-top:4px;
+
+  background:#374151;
+
+  border-radius:8px;
+
+  overflow:hidden;
+}
+
+#healthFill{
+  width:100%;
+  height:100%;
+
+  background:#22c55e;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:600px){
+
+  .stats{
+    font-size:10px;
+  }
+
+  .logo{
+    font-size:15px;
+  }
+
+  .joystick{
+    width:105px;
+    height:105px;
+  }
+
+  .stick{
+    width:46px;
+    height:46px;
+
+    left:28px;
+    top:28px;
+  }
+
+  #fire{
+    right:135px;
+    bottom:150px;
+  }
+
+  #run,
+  #crouch{
+    left:130px;
   }
 }
 </style>
@@ -334,75 +415,185 @@ html, body {
     </div>
 
     <div class="stats">
-      Weapon:
-      <span id="weapon">Rifle</span>
+
+      <span id="weapon">
+        RIFLE
+      </span>
+
       |
+
       Ammo:
-      <span id="ammo">30</span>/30
+      <span id="ammo">
+        30
+      </span>/30
+
       |
+
       Hits:
-      <span id="hits">0</span>
+      <span id="hits">
+        0
+      </span>
+
     </div>
 
   </div>
 
+
   <div id="message">
-    LAWANG-GAMING DEMO
+    LAWANG-GAMING v2
   </div>
+
 
   <div id="player"></div>
 
+
   <div id="crosshair"></div>
 
-  <!-- TARGETS -->
 
-  <div class="target"
-       id="target1"
+  <!-- ================= ENEMIES ================= -->
+
+  <div class="enemy"
+       id="enemy1"
        style="left:25%;top:35%;">
+
+    <div class="enemy-head"
+         onclick="hitEnemy('enemy1','head')">
+    </div>
+
+    <div class="enemy-body"
+         onclick="hitEnemy('enemy1','body')">
+    </div>
+
+    <div class="enemy-legs"
+         onclick="hitEnemy('enemy1','legs')">
+    </div>
+
   </div>
 
-  <div class="target"
-       id="target2"
+
+  <div class="enemy"
+       id="enemy2"
        style="left:65%;top:30%;">
+
+    <div class="enemy-head"
+         onclick="hitEnemy('enemy2','head')">
+    </div>
+
+    <div class="enemy-body"
+         onclick="hitEnemy('enemy2','body')">
+    </div>
+
+    <div class="enemy-legs"
+         onclick="hitEnemy('enemy2','legs')">
+    </div>
+
   </div>
 
-  <div class="target"
-       id="target3"
+
+  <div class="enemy"
+       id="enemy3"
        style="left:50%;top:65%;">
+
+    <div class="enemy-head"
+         onclick="hitEnemy('enemy3','head')">
+    </div>
+
+    <div class="enemy-body"
+         onclick="hitEnemy('enemy3','body')">
+    </div>
+
+    <div class="enemy-legs"
+         onclick="hitEnemy('enemy3','legs')">
+    </div>
+
   </div>
 
-  <!-- MOVEMENT -->
 
-  <button class="control" id="up">▲</button>
-  <button class="control" id="down">▼</button>
-  <button class="control" id="left">◀</button>
-  <button class="control" id="right">▶</button>
+  <!-- ================= MOVE JOYSTICK ================= -->
 
-  <!-- ACTIONS -->
+  <div
+    class="joystick"
+    id="moveStick">
 
-  <button class="action" id="fire">
+    <div class="stick"
+         id="moveKnob">
+    </div>
+
+  </div>
+
+
+  <!-- ================= AIM JOYSTICK ================= -->
+
+  <div
+    class="joystick"
+    id="aimStick">
+
+    <div class="stick"
+         id="aimKnob">
+    </div>
+
+  </div>
+
+
+  <!-- ================= ACTIONS ================= -->
+
+  <button
+    class="action"
+    id="fire">
     FIRE
   </button>
 
-  <button class="action" id="reload">
+
+  <button
+    class="action"
+    id="reload">
     ↻
   </button>
 
-  <button class="action" id="switch">
+
+  <button
+    class="action"
+    id="switch">
     GUN
   </button>
 
+
+  <button
+    class="action"
+    id="run">
+    RUN
+  </button>
+
+
+  <button
+    class="action"
+    id="crouch">
+    CROUCH
+  </button>
+
+
+  <!-- ================= HEALTH ================= -->
+
+  <div id="healthBox">
+
+    Player HP
+
+    <div id="healthBar">
+
+      <div id="healthFill"></div>
+
+    </div>
+
+  </div>
+
 </div>
+
 
 <script>
 
 /* =========================================
-   LAWANG-GAMING
-   STANDALONE DEMO
+   LAWANG-GAMING v2
 ========================================= */
-
-const game =
-  document.getElementById("game");
 
 const player =
   document.getElementById("player");
@@ -419,40 +610,83 @@ const weaponText =
 const message =
   document.getElementById("message");
 
+const healthFill =
+  document.getElementById("healthFill");
+
+
+/* =========================================
+   GAME STATE
+========================================= */
 
 let playerX = 50;
 let playerY = 55;
 
 let ammo = 30;
+
 let hits = 0;
+
+let playerHealth = 100;
+
+let running = false;
+
+let crouching = false;
 
 let weaponIndex = 0;
 
-const weapons = [
-  "Rifle",
-  "SMG",
-  "Shotgun"
-];
+let aimX = 0;
+let aimY = 0;
 
-const speed = 0.7;
+let fireTimer = null;
+
+
+const weapons = [
+
+  {
+    name:"RIFLE",
+    ammo:30,
+    fireRate:180,
+    damage:30
+  },
+
+  {
+    name:"SMG",
+    ammo:40,
+    fireRate:90,
+    damage:18
+  },
+
+  {
+    name:"SHOTGUN",
+    ammo:8,
+    fireRate:500,
+    damage:55
+  }
+
+];
 
 
 /* =========================================
    PLAYER
 ========================================= */
 
-function updatePlayer() {
+function updatePlayer(){
 
   playerX =
     Math.max(
       5,
-      Math.min(95, playerX)
+      Math.min(
+        95,
+        playerX
+      )
     );
 
   playerY =
     Math.max(
       10,
-      Math.min(90, playerY)
+      Math.min(
+        90,
+        playerY
+      )
     );
 
   player.style.left =
@@ -460,6 +694,13 @@ function updatePlayer() {
 
   player.style.top =
     playerY + "%";
+
+
+  player.style.transform =
+    crouching
+      ? "translate(-50%,-50%) scale(.72)"
+      : "translate(-50%,-50%)";
+
 }
 
 
@@ -467,113 +708,220 @@ function updatePlayer() {
    MOVEMENT
 ========================================= */
 
-function move(direction) {
+function move(x,y){
 
-  if (direction === "up") {
-    playerY -= speed;
-  }
+  const multiplier =
+    running ? 1.5 : 1;
 
-  if (direction === "down") {
-    playerY += speed;
-  }
+  playerX +=
+    x *
+    multiplier;
 
-  if (direction === "left") {
-    playerX -= speed;
-  }
-
-  if (direction === "right") {
-    playerX += speed;
-  }
+  playerY +=
+    y *
+    multiplier;
 
   updatePlayer();
+
 }
 
 
 /* =========================================
-   TOUCH CONTROL
+   MOVE JOYSTICK
 ========================================= */
 
-function holdButton(
-  element,
-  direction
-) {
+function setupJoystick(
+  stickId,
+  knobId,
+  callback
+){
 
-  let timer = null;
+  const stick =
+    document.getElementById(
+      stickId
+    );
 
-  const start = (event) => {
+  const knob =
+    document.getElementById(
+      knobId
+    );
+
+  let active = false;
+
+  let startX = 0;
+  let startY = 0;
+
+
+  function start(event){
 
     event.preventDefault();
 
-    move(direction);
+    active = true;
 
-    timer =
-      setInterval(
-        () => move(direction),
-        30
-      );
-  };
+    const point =
+      event.touches
+        ? event.touches[0]
+        : event;
 
-  const stop = () => {
+    startX =
+      point.clientX;
 
-    if (timer) {
+    startY =
+      point.clientY;
 
-      clearInterval(timer);
+  }
 
-      timer = null;
+
+  function moveStick(event){
+
+    if(!active)
+      return;
+
+    event.preventDefault();
+
+    const point =
+      event.touches
+        ? event.touches[0]
+        : event;
+
+    let dx =
+      point.clientX -
+      startX;
+
+    let dy =
+      point.clientY -
+      startY;
+
+
+    const max = 32;
+
+    const distance =
+      Math.hypot(dx,dy);
+
+
+    if(distance > max){
+
+      dx =
+        dx /
+        distance *
+        max;
+
+      dy =
+        dy /
+        distance *
+        max;
+
     }
-  };
 
-  element.addEventListener(
+
+    knob.style.transform =
+      `translate(${dx}px,${dy}px)`;
+
+
+    callback(
+      dx / max,
+      dy / max
+    );
+
+  }
+
+
+  function end(){
+
+    active = false;
+
+    knob.style.transform =
+      "translate(0,0)";
+
+  }
+
+
+  stick.addEventListener(
     "touchstart",
     start,
-    { passive:false }
+    {passive:false}
   );
 
-  element.addEventListener(
+  stick.addEventListener(
+    "touchmove",
+    moveStick,
+    {passive:false}
+  );
+
+  stick.addEventListener(
     "touchend",
-    stop
+    end
   );
 
-  element.addEventListener(
-    "touchcancel",
-    stop
-  );
 
-  element.addEventListener(
+  stick.addEventListener(
     "mousedown",
     start
   );
 
-  element.addEventListener(
-    "mouseup",
-    stop
+  window.addEventListener(
+    "mousemove",
+    moveStick
   );
 
-  element.addEventListener(
-    "mouseleave",
-    stop
+  window.addEventListener(
+    "mouseup",
+    end
   );
+
 }
 
 
-holdButton(
-  document.getElementById("up"),
-  "up"
+/* =========================================
+   MOVEMENT JOYSTICK
+========================================= */
+
+setupJoystick(
+  "moveStick",
+  "moveKnob",
+  (x,y)=>{
+
+    move(
+      x * .45,
+      y * .45
+    );
+
+  }
 );
 
-holdButton(
-  document.getElementById("down"),
-  "down"
-);
 
-holdButton(
-  document.getElementById("left"),
-  "left"
-);
+/* =========================================
+   AIM JOYSTICK
+========================================= */
 
-holdButton(
-  document.getElementById("right"),
-  "right"
+setupJoystick(
+  "aimStick",
+  "aimKnob",
+  (x,y)=>{
+
+    aimX = x;
+    aimY = y;
+
+    /*
+      In this prototype the right
+      joystick controls the aiming
+      direction/state.
+    */
+
+    const angle =
+      Math.atan2(
+        y,
+        x
+      ) *
+      180 /
+      Math.PI;
+
+    document.getElementById(
+      "crosshair"
+    ).style.transform =
+      `translate(-50%,-50%) rotate(${angle}deg)`;
+
+  }
 );
 
 
@@ -581,150 +929,171 @@ holdButton(
    FIRE
 ========================================= */
 
-function fire() {
+function fire(){
 
-  if (ammo <= 0) {
+  const gun =
+    weapons[weaponIndex];
+
+
+  if(ammo <= 0){
 
     showMessage(
-      "Out of ammo — Reload"
+      "RELOAD!"
     );
 
     return;
+
   }
+
 
   ammo--;
 
   ammoText.innerText =
     ammo;
 
-  /*
-    Demo hit system:
 
-    The crosshair is treated as the
-    aiming point. We check whether
-    a target's HEAD is close to it.
+  /*
+    Demo firing logic.
+
+    Targets are checked by their
+    hit zones. This is a prototype
+    damage system for our own game.
   */
 
-  const targets =
-    document.querySelectorAll(
-      ".target"
-    );
-
-  let hit = false;
-
-  const crossX =
-    window.innerWidth / 2;
-
-  const crossY =
-    window.innerHeight / 2;
-
-
-  targets.forEach(
-    target => {
-
-      if (
-        target.classList.contains(
-          "hit"
-        )
-      ) {
-
-        return;
-      }
-
-      const rect =
-        target.getBoundingClientRect();
-
-      /*
-        HEAD AREA ONLY
-      */
-
-      const headX =
-        rect.left +
-        rect.width / 2;
-
-      const headY =
-        rect.top -
-        22 +
-        17;
-
-      const distance =
-        Math.hypot(
-          crossX - headX,
-          crossY - headY
-        );
-
-      if (distance < 35) {
-
-        target.classList.add(
-          "hit"
-        );
-
-        hits++;
-
-        hitsText.innerText =
-          hits;
-
-        hit = true;
-
-        showMessage(
-          "HEAD HIT!"
-        );
-      }
-
-    }
+  showMessage(
+    "FIRE"
   );
 
-
-  if (!hit) {
-
-    showMessage(
-      "MISS"
-    );
-
-  }
 }
 
 
 /* =========================================
-   FIRE BUTTON
+   HIT ZONES
 ========================================= */
 
-const fireButton =
-  document.getElementById("fire");
+function hitEnemy(
+  enemyId,
+  zone
+){
 
-fireButton.addEventListener(
-  "touchstart",
-  event => {
+  const enemy =
+    document.getElementById(
+      enemyId
+    );
 
-    event.preventDefault();
 
-    fire();
+  if(
+    enemy.classList.contains(
+      "dead"
+    )
+  ){
 
-  },
-  { passive:false }
-);
+    return;
 
-fireButton.addEventListener(
-  "click",
-  fire
-);
+  }
+
+
+  const gun =
+    weapons[weaponIndex];
+
+
+  let damage =
+    gun.damage;
+
+
+  if(zone === "head"){
+
+    damage *= 2;
+
+    showMessage(
+      "HEAD HIT! +" +
+      damage +
+      " DAMAGE"
+    );
+
+  }
+
+  else if(zone === "body"){
+
+    damage *= 1;
+
+    showMessage(
+      "BODY HIT +" +
+      damage
+    );
+
+  }
+
+  else{
+
+    damage *= .5;
+
+    showMessage(
+      "LEG HIT +" +
+      damage
+    );
+
+  }
+
+
+  hits++;
+
+  hitsText.innerText =
+    hits;
+
+
+  /*
+    Demo enemy health.
+  */
+
+  let hp =
+    Number(
+      enemy.dataset.hp ||
+      100
+    );
+
+
+  hp -= damage;
+
+  enemy.dataset.hp =
+    hp;
+
+
+  if(hp <= 0){
+
+    enemy.classList.add(
+      "dead"
+    );
+
+    showMessage(
+      "ENEMY DOWN"
+    );
+
+  }
+
+}
 
 
 /* =========================================
    RELOAD
 ========================================= */
 
-function reload() {
+function reload(){
 
-  ammo = 30;
+  ammo =
+    weapons[
+      weaponIndex
+    ].ammo;
 
   ammoText.innerText =
     ammo;
 
   showMessage(
-    "Reloaded"
+    "RELOADED"
   );
+
 }
+
 
 document
   .getElementById("reload")
@@ -738,26 +1107,43 @@ document
    WEAPON SWITCH
 ========================================= */
 
-function switchWeapon() {
+function switchWeapon(){
 
   weaponIndex++;
 
-  if (
+  if(
     weaponIndex >=
     weapons.length
-  ) {
+  ){
 
     weaponIndex = 0;
+
   }
 
-  weaponText.innerText =
+
+  const gun =
     weapons[weaponIndex];
 
+
+  weaponText.innerText =
+    gun.name;
+
+
+  ammo =
+    gun.ammo;
+
+
+  ammoText.innerText =
+    ammo;
+
+
   showMessage(
-    "Weapon: " +
-    weapons[weaponIndex]
+    "WEAPON: " +
+    gun.name
   );
+
 }
+
 
 document
   .getElementById("switch")
@@ -768,30 +1154,139 @@ document
 
 
 /* =========================================
+   FIRE BUTTON
+========================================= */
+
+const fireButton =
+  document.getElementById(
+    "fire"
+  );
+
+
+fireButton.addEventListener(
+  "touchstart",
+  event=>{
+
+    event.preventDefault();
+
+    fire();
+
+    clearInterval(
+      fireTimer
+    );
+
+    fireTimer =
+      setInterval(
+        fire,
+        weapons[
+          weaponIndex
+        ].fireRate
+      );
+
+  },
+  {passive:false}
+);
+
+
+function stopFire(){
+
+  clearInterval(
+    fireTimer
+  );
+
+  fireTimer = null;
+
+}
+
+
+fireButton.addEventListener(
+  "touchend",
+  stopFire
+);
+
+fireButton.addEventListener(
+  "touchcancel",
+  stopFire
+);
+
+
+/* =========================================
+   RUN
+========================================= */
+
+document
+  .getElementById("run")
+  .addEventListener(
+    "click",
+    ()=>{
+
+      running =
+        !running;
+
+      showMessage(
+        running
+          ? "RUN ON"
+          : "RUN OFF"
+      );
+
+    }
+  );
+
+
+/* =========================================
+   CROUCH
+========================================= */
+
+document
+  .getElementById("crouch")
+  .addEventListener(
+    "click",
+    ()=>{
+
+      crouching =
+        !crouching;
+
+      updatePlayer();
+
+      showMessage(
+        crouching
+          ? "CROUCH ON"
+          : "CROUCH OFF"
+      );
+
+    }
+  );
+
+
+/* =========================================
    MESSAGE
 ========================================= */
 
 let messageTimer = null;
 
-function showMessage(text) {
+
+function showMessage(text){
 
   message.innerText =
     text;
+
 
   clearTimeout(
     messageTimer
   );
 
+
   messageTimer =
     setTimeout(
-      () => {
+      ()=>{
 
         message.innerText =
-          "LAWANG-GAMING DEMO";
+          "LAWANG-GAMING v2";
 
       },
-      1000
+      1200
     );
+
 }
 
 
