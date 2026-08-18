@@ -5,9 +5,7 @@
 <meta name="viewport"
       content="width=device-width,initial-scale=1,
                maximum-scale=1,user-scalable=no">
-
 <title>Lawang-gaming v2</title>
-
 <style>
 *{
   box-sizing:border-box;
@@ -15,7 +13,6 @@
   padding:0;
   -webkit-tap-highlight-color:transparent;
 }
-
 html,body{
   width:100%;
   height:100%;
@@ -24,7 +21,6 @@ html,body{
   font-family:Arial,sans-serif;
   touch-action:none;
 }
-
 #game{
   position:relative;
   width:100vw;
@@ -36,9 +32,7 @@ html,body{
     #1f2937 45%,
     #111827 100%);
 }
-
 /* ================= TOP BAR ================= */
-
 #topbar{
   position:absolute;
   top:0;
@@ -46,356 +40,237 @@ html,body{
   right:0;
   height:55px;
   z-index:100;
-
   display:flex;
   align-items:center;
   justify-content:space-between;
-
   padding:0 12px;
-
   color:white;
   background:rgba(0,0,0,.65);
 }
-
 .logo{
   font-size:17px;
   font-weight:bold;
 }
-
 .stats{
   font-size:12px;
 }
-
 /* ================= PLAYER ================= */
-
 #player{
   position:absolute;
-
   width:42px;
   height:42px;
-
   left:50%;
   top:55%;
-
   transform:translate(-50%,-50%);
-
   border-radius:50%;
-
   background:#2563eb;
-
   border:3px solid white;
-
   z-index:20;
 }
-
 /* ================= TARGET ================= */
-
 .enemy{
   position:absolute;
-
   width:46px;
   height:72px;
-
   background:#dc2626;
-
   border:3px solid white;
-
   border-radius:12px;
-
   z-index:10;
 }
-
 .enemy-head{
   position:absolute;
-
   width:34px;
   height:34px;
-
   left:50%;
   top:-25px;
-
   transform:translateX(-50%);
-
   border-radius:50%;
-
   background:#fbbf24;
-
   border:3px solid white;
-
   cursor:pointer;
 }
-
 .enemy-body{
   position:absolute;
-
   left:3px;
   right:3px;
   top:28px;
   height:32px;
-
   border-radius:6px;
-
   cursor:pointer;
 }
-
 .enemy-legs{
   position:absolute;
-
   left:8px;
   right:8px;
   bottom:-18px;
   height:18px;
-
   background:#1e40af;
-
   border-radius:0 0 7px 7px;
-
   cursor:pointer;
 }
-
 .enemy.dead{
   opacity:.25;
   filter:grayscale(1);
 }
-
 /* ================= CROSSHAIR ================= */
-
 #crosshair{
   position:absolute;
-
   left:50%;
   top:50%;
-
   width:36px;
   height:36px;
-
   transform:translate(-50%,-50%);
-
   z-index:80;
-
   pointer-events:none;
 }
-
 #crosshair:before,
 #crosshair:after{
   content:"";
   position:absolute;
   background:white;
 }
-
 #crosshair:before{
   width:36px;
   height:2px;
   left:0;
   top:17px;
 }
-
 #crosshair:after{
   width:2px;
   height:36px;
   left:17px;
   top:0;
 }
-
 /* ================= MESSAGE ================= */
-
 #message{
   position:absolute;
-
   top:68px;
   left:50%;
-
   transform:translateX(-50%);
-
   z-index:150;
-
   color:white;
-
   background:rgba(0,0,0,.65);
-
   padding:8px 14px;
-
   border-radius:10px;
-
   font-size:13px;
-
   white-space:nowrap;
 }
-
 /* ================= JOYSTICKS ================= */
-
 .joystick{
   position:absolute;
-
   width:120px;
   height:120px;
-
   border-radius:50%;
-
   background:rgba(0,0,0,.30);
-
   border:2px solid rgba(255,255,255,.35);
-
   z-index:120;
 }
-
 #moveStick{
   left:20px;
   bottom:25px;
 }
-
 #aimStick{
   right:20px;
   bottom:25px;
 }
-
 .stick{
   position:absolute;
-
   width:52px;
   height:52px;
-
   left:34px;
   top:34px;
-
   border-radius:50%;
-
   background:rgba(255,255,255,.35);
-
   border:2px solid rgba(255,255,255,.65);
 }
-
 /* ================= ACTION BUTTONS ================= */
-
 .action{
   position:absolute;
-
   z-index:130;
-
   border:2px solid rgba(255,255,255,.55);
-
   color:white;
-
   border-radius:50%;
-
   background:rgba(0,0,0,.65);
-
   font-weight:bold;
 }
-
 #fire{
   right:155px;
   bottom:170px;
-
   width:76px;
   height:76px;
-
   background:rgba(220,38,38,.85);
 }
-
 #reload{
   right:35px;
   bottom:170px;
-
   width:58px;
   height:58px;
 }
-
 #switch{
   right:35px;
   bottom:105px;
-
   width:58px;
   height:58px;
 }
-
 #run{
   left:155px;
   bottom:160px;
-
   width:58px;
   height:58px;
 }
-
 #crouch{
   left:155px;
   bottom:95px;
-
   width:58px;
   height:58px;
 }
-
 /* ================= HEALTH ================= */
-
 #healthBox{
   position:absolute;
-
   left:50%;
   bottom:15px;
-
   transform:translateX(-50%);
-
   width:160px;
-
   z-index:100;
-
   color:white;
-
   text-align:center;
-
   font-size:12px;
 }
-
 #healthBar{
   width:100%;
   height:8px;
-
   margin-top:4px;
-
   background:#374151;
-
   border-radius:8px;
-
   overflow:hidden;
 }
-
 #healthFill{
   width:100%;
   height:100%;
-
   background:#22c55e;
 }
-
 /* ================= MOBILE ================= */
-
 @media(max-width:600px){
-
   .stats{
     font-size:10px;
   }
-
   .logo{
     font-size:15px;
   }
-
   .joystick{
     width:105px;
     height:105px;
   }
-
   .stick{
     width:46px;
     height:46px;
-
     left:28px;
     top:28px;
   }
-
   #fire{
     right:135px;
     bottom:150px;
   }
-
   #run,
   #crouch{
     left:130px;
@@ -403,274 +278,177 @@ html,body{
 }
 </style>
 </head>
-
 <body>
-
 <div id="game">
-
   <div id="topbar">
-
     <div class="logo">
       LAWANG-GAMING
     </div>
-
     <div class="stats">
-
       <span id="weapon">
         RIFLE
       </span>
-
       |
-
       Ammo:
       <span id="ammo">
         30
       </span>/30
-
       |
-
       Hits:
       <span id="hits">
         0
       </span>
-
     </div>
-
   </div>
-
-
   <div id="message">
     LAWANG-GAMING v2
   </div>
-
-
   <div id="player"></div>
-
-
   <div id="crosshair"></div>
-
-
   <!-- ================= ENEMIES ================= -->
-
   <div class="enemy"
        id="enemy1"
        style="left:25%;top:35%;">
-
     <div class="enemy-head"
          onclick="hitEnemy('enemy1','head')">
     </div>
-
     <div class="enemy-body"
          onclick="hitEnemy('enemy1','body')">
     </div>
-
     <div class="enemy-legs"
          onclick="hitEnemy('enemy1','legs')">
     </div>
-
   </div>
-
-
   <div class="enemy"
        id="enemy2"
        style="left:65%;top:30%;">
-
     <div class="enemy-head"
          onclick="hitEnemy('enemy2','head')">
     </div>
-
     <div class="enemy-body"
          onclick="hitEnemy('enemy2','body')">
     </div>
-
     <div class="enemy-legs"
          onclick="hitEnemy('enemy2','legs')">
     </div>
-
   </div>
-
-
   <div class="enemy"
        id="enemy3"
        style="left:50%;top:65%;">
-
     <div class="enemy-head"
          onclick="hitEnemy('enemy3','head')">
     </div>
-
     <div class="enemy-body"
          onclick="hitEnemy('enemy3','body')">
     </div>
-
     <div class="enemy-legs"
          onclick="hitEnemy('enemy3','legs')">
     </div>
-
   </div>
-
-
   <!-- ================= MOVE JOYSTICK ================= -->
-
   <div
     class="joystick"
     id="moveStick">
-
     <div class="stick"
          id="moveKnob">
     </div>
-
   </div>
-
-
   <!-- ================= AIM JOYSTICK ================= -->
-
   <div
     class="joystick"
     id="aimStick">
-
     <div class="stick"
          id="aimKnob">
     </div>
-
   </div>
-
-
   <!-- ================= ACTIONS ================= -->
-
   <button
     class="action"
     id="fire">
     FIRE
   </button>
-
-
   <button
     class="action"
     id="reload">
     ↻
   </button>
-
-
   <button
     class="action"
     id="switch">
     GUN
   </button>
-
-
   <button
     class="action"
     id="run">
     RUN
   </button>
-
-
   <button
     class="action"
     id="crouch">
     CROUCH
   </button>
-
-
   <!-- ================= HEALTH ================= -->
-
   <div id="healthBox">
-
     Player HP
-
     <div id="healthBar">
-
       <div id="healthFill"></div>
-
     </div>
-
   </div>
-
 </div>
-
-
 <script>
-
 /* =========================================
    LAWANG-GAMING v2
 ========================================= */
-
 const player =
   document.getElementById("player");
-
 const ammoText =
   document.getElementById("ammo");
-
 const hitsText =
   document.getElementById("hits");
-
 const weaponText =
   document.getElementById("weapon");
-
 const message =
   document.getElementById("message");
-
 const healthFill =
   document.getElementById("healthFill");
-
-
 /* =========================================
    GAME STATE
 ========================================= */
-
 let playerX = 50;
 let playerY = 55;
-
 let ammo = 30;
-
 let hits = 0;
-
 let playerHealth = 100;
-
 let running = false;
-
 let crouching = false;
-
 let weaponIndex = 0;
-
 let aimX = 0;
 let aimY = 0;
-
 let fireTimer = null;
-
-
 const weapons = [
-
   {
     name:"RIFLE",
     ammo:30,
     fireRate:180,
     damage:30
   },
-
   {
     name:"SMG",
     ammo:40,
     fireRate:90,
     damage:18
   },
-
   {
     name:"SHOTGUN",
     ammo:8,
     fireRate:500,
     damage:55
   }
-
 ];
-
-
 /* =========================================
    PLAYER
 ========================================= */
-
 function updatePlayer(){
-
   playerX =
     Math.max(
       5,
@@ -679,7 +457,6 @@ function updatePlayer(){
         playerX
       )
     );
-
   playerY =
     Math.max(
       10,
@@ -688,226 +465,153 @@ function updatePlayer(){
         playerY
       )
     );
-
   player.style.left =
     playerX + "%";
-
   player.style.top =
     playerY + "%";
-
-
   player.style.transform =
     crouching
       ? "translate(-50%,-50%) scale(.72)"
       : "translate(-50%,-50%)";
-
 }
-
-
 /* =========================================
    MOVEMENT
 ========================================= */
-
 function move(x,y){
-
   const multiplier =
     running ? 1.5 : 1;
-
   playerX +=
     x *
     multiplier;
-
   playerY +=
     y *
     multiplier;
-
   updatePlayer();
-
 }
-
-
 /* =========================================
    MOVE JOYSTICK
 ========================================= */
-
 function setupJoystick(
   stickId,
   knobId,
   callback
 ){
-
   const stick =
     document.getElementById(
       stickId
     );
-
   const knob =
     document.getElementById(
       knobId
     );
-
   let active = false;
-
   let startX = 0;
   let startY = 0;
-
-
   function start(event){
-
     event.preventDefault();
-
     active = true;
-
     const point =
       event.touches
         ? event.touches[0]
         : event;
-
     startX =
       point.clientX;
-
     startY =
       point.clientY;
-
   }
-
-
   function moveStick(event){
-
     if(!active)
       return;
-
     event.preventDefault();
-
     const point =
       event.touches
         ? event.touches[0]
         : event;
-
     let dx =
       point.clientX -
       startX;
-
     let dy =
       point.clientY -
       startY;
-
-
     const max = 32;
-
     const distance =
       Math.hypot(dx,dy);
-
-
     if(distance > max){
-
       dx =
         dx /
         distance *
         max;
-
       dy =
         dy /
         distance *
         max;
-
     }
-
-
     knob.style.transform =
       `translate(${dx}px,${dy}px)`;
-
-
     callback(
       dx / max,
       dy / max
     );
-
   }
-
-
   function end(){
-
     active = false;
-
     knob.style.transform =
       "translate(0,0)";
-
   }
-
-
   stick.addEventListener(
     "touchstart",
     start,
     {passive:false}
   );
-
   stick.addEventListener(
     "touchmove",
     moveStick,
     {passive:false}
   );
-
   stick.addEventListener(
     "touchend",
     end
   );
-
-
   stick.addEventListener(
     "mousedown",
     start
   );
-
   window.addEventListener(
     "mousemove",
     moveStick
   );
-
   window.addEventListener(
     "mouseup",
     end
   );
-
 }
-
-
 /* =========================================
    MOVEMENT JOYSTICK
 ========================================= */
-
 setupJoystick(
   "moveStick",
   "moveKnob",
   (x,y)=>{
-
     move(
       x * .45,
       y * .45
     );
-
   }
 );
-
-
 /* =========================================
    AIM JOYSTICK
 ========================================= */
-
 setupJoystick(
   "aimStick",
   "aimKnob",
   (x,y)=>{
-
     aimX = x;
     aimY = y;
-
     /*
       In this prototype the right
       joystick controls the aiming
       direction/state.
     */
-
     const angle =
       Math.atan2(
         y,
@@ -915,266 +619,169 @@ setupJoystick(
       ) *
       180 /
       Math.PI;
-
     document.getElementById(
       "crosshair"
     ).style.transform =
       `translate(-50%,-50%) rotate(${angle}deg)`;
-
   }
 );
-
-
 /* =========================================
    FIRE
 ========================================= */
-
 function fire(){
-
   const gun =
     weapons[weaponIndex];
-
-
   if(ammo <= 0){
-
     showMessage(
       "RELOAD!"
     );
-
     return;
-
   }
-
-
   ammo--;
-
   ammoText.innerText =
     ammo;
-
-
   /*
     Demo firing logic.
-
     Targets are checked by their
     hit zones. This is a prototype
     damage system for our own game.
   */
-
   showMessage(
     "FIRE"
   );
-
 }
-
-
 /* =========================================
    HIT ZONES
 ========================================= */
-
 function hitEnemy(
   enemyId,
   zone
 ){
-
   const enemy =
     document.getElementById(
       enemyId
     );
-
-
   if(
     enemy.classList.contains(
       "dead"
     )
   ){
-
     return;
-
   }
-
-
   const gun =
     weapons[weaponIndex];
-
-
   let damage =
     gun.damage;
-
-
   if(zone === "head"){
-
     damage *= 2;
-
     showMessage(
       "HEAD HIT! +" +
       damage +
       " DAMAGE"
     );
-
   }
-
   else if(zone === "body"){
-
     damage *= 1;
-
     showMessage(
       "BODY HIT +" +
       damage
     );
-
   }
-
   else{
-
     damage *= .5;
-
     showMessage(
       "LEG HIT +" +
       damage
     );
-
   }
-
-
   hits++;
-
   hitsText.innerText =
     hits;
-
-
   /*
     Demo enemy health.
   */
-
   let hp =
     Number(
       enemy.dataset.hp ||
       100
     );
-
-
   hp -= damage;
-
   enemy.dataset.hp =
     hp;
-
-
   if(hp <= 0){
-
     enemy.classList.add(
       "dead"
     );
-
     showMessage(
       "ENEMY DOWN"
     );
-
   }
-
 }
-
-
 /* =========================================
    RELOAD
 ========================================= */
-
 function reload(){
-
   ammo =
     weapons[
       weaponIndex
     ].ammo;
-
   ammoText.innerText =
     ammo;
-
   showMessage(
     "RELOADED"
   );
-
 }
-
-
 document
   .getElementById("reload")
   .addEventListener(
     "click",
     reload
   );
-
-
 /* =========================================
    WEAPON SWITCH
 ========================================= */
-
 function switchWeapon(){
-
   weaponIndex++;
-
   if(
     weaponIndex >=
     weapons.length
   ){
-
     weaponIndex = 0;
-
   }
-
-
   const gun =
     weapons[weaponIndex];
-
-
   weaponText.innerText =
     gun.name;
-
-
   ammo =
     gun.ammo;
-
-
   ammoText.innerText =
     ammo;
-
-
   showMessage(
     "WEAPON: " +
     gun.name
   );
-
 }
-
-
 document
   .getElementById("switch")
   .addEventListener(
     "click",
     switchWeapon
   );
-
-
 /* =========================================
    FIRE BUTTON
 ========================================= */
-
 const fireButton =
   document.getElementById(
     "fire"
   );
-
-
 fireButton.addEventListener(
   "touchstart",
   event=>{
-
     event.preventDefault();
-
     fire();
-
     clearInterval(
       fireTimer
     );
-
     fireTimer =
       setInterval(
         fire,
@@ -1182,121 +789,81 @@ fireButton.addEventListener(
           weaponIndex
         ].fireRate
       );
-
   },
   {passive:false}
 );
-
-
 function stopFire(){
-
   clearInterval(
     fireTimer
   );
-
   fireTimer = null;
-
 }
-
-
 fireButton.addEventListener(
   "touchend",
   stopFire
 );
-
 fireButton.addEventListener(
   "touchcancel",
   stopFire
 );
-
-
 /* =========================================
    RUN
 ========================================= */
-
 document
   .getElementById("run")
   .addEventListener(
     "click",
     ()=>{
-
       running =
         !running;
-
       showMessage(
         running
           ? "RUN ON"
           : "RUN OFF"
       );
-
     }
   );
-
-
 /* =========================================
    CROUCH
 ========================================= */
-
 document
   .getElementById("crouch")
   .addEventListener(
     "click",
     ()=>{
-
       crouching =
         !crouching;
-
       updatePlayer();
-
       showMessage(
         crouching
           ? "CROUCH ON"
           : "CROUCH OFF"
       );
-
     }
   );
-
-
 /* =========================================
    MESSAGE
 ========================================= */
-
 let messageTimer = null;
-
-
 function showMessage(text){
-
   message.innerText =
     text;
-
-
   clearTimeout(
     messageTimer
   );
-
-
   messageTimer =
     setTimeout(
       ()=>{
-
         message.innerText =
           "LAWANG-GAMING v2";
-
       },
       1200
     );
-
 }
-
-
 /* =========================================
    START
 ========================================= */
-
 updatePlayer();
-
 </script>
-
 </body>
 </html>
